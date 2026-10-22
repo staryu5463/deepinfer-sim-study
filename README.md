@@ -154,3 +154,52 @@ A CUDA GPU is recommended for the EPLB simulator (token-level routing runs in to
 补充检验（`mr_latency_scale.py`）：协调方案在提升吞吐的同时降低每用户延迟（TPOT −0.2% ~ −2.9%），没有任何设置变差；EP 越大收益越大（EP8 +0.2% ~ +1.4%，EP64 +0.8% ~ +3.0%）。
 
 扩展校准（`calibrate_dspark_v2.py`）：加入 confidence 偏差参数后 loss 只从 25.9 降到 23.2，拟合出的偏差约为 0，仍然无法复现 conc=16 的 −1.5%。所以"head 没校准好"这个解释不被数据支持。
+
+## 第四轮：借鉴 CPU / 操作系统的思路（2026-10-22）
+
+### DeepInfer 已经借鉴的 CPU/OS 思路
+
+| CPU / OS 思路 | DeepInfer 中的对应 | 位置 |
+|---|---|---|
+| 虚拟内存分页 | paged KV cache，block table 间接寻址 | `csrc/engine/block_manager.hpp` |
+| fork() 写时复制 | `fork_seq`：引用计数 pin 共享块，只复制写了一半的最后一块 | `scheduler.hpp:1061`、`:602-617` |
+| 分支预测 / 推测执行 | DSpark 草稿 + confidence head，验证失败即回滚 | `mtp_varlen.hpp` |
+| 软件 TLB | DeepGEMM 分页 MQA 每个 lane 缓存一个页坐标 | `sm100_paged_mqa_logits.cuh` |
+| 流水线 / 乱序执行 | 零开销调度：CPU 调度与 GPU 执行重叠；combine 期间算共享专家 | `worker.py`、`mlp.py` |
+| 环形缓冲 | SWA 状态按 ring buffer 存放，128 token 边界合并写 | `cache_engine.py` |
+| 存储层次 + LRU | HBM / 主机内存 / 3FS SSD 三级，3FS GC 使用 LRU | 部署文档 |
+| 核隔离 / 资源划分 | `limit_num_sms` 给通信 kernel 预留 SM | `mlp.py` |
+
+### 闭环验证（Kimi 公开生产 trace：Mooncake FAST25-release，1 小时，35,639 个请求）
+
+数据下载（不随本仓库分发）：
+
+```bash
+mkdir -p data && for f in conversation_trace toolagent_trace; do curl -L -o data/$f.jsonl https://raw.githubusercontent.com/kvcache-ai/Mooncake/main/FAST25-release/traces/$f.jsonl; done
+```
+
+**1. KV 复用特征（`trace_stats.py`）**：只算整块时，71%～73% 写进存储的 KV 块在之后 30 分钟以上的时间里从没被复用过；最热的 10% 块贡献了 75%～91% 的复用。
+
+**2. 写准入（`kv_cache_sim.py`、`deadblock.py`）**
+
+| 思路 | 结果 |
+|---|---|
+| 直接照搬 S3-FIFO / "第二次访问才写 SSD"（DRAM 试用队列） | SSD 写入减少 75%～92%，但中大容量下命中率掉 5～15 个点，**不划算**：KV 第一次复用往往晚于试用窗口，而未命中要重算 prefill，代价很高 |
+| CPU 末级缓存的死块预测（写入时预测是否会被复用，预测"死"则绕过） | 只用 trace 能拿到的特征，预测 AUC 只有 0.62～0.64。容量紧张（5%）时**命中率 +1.5 个点，同时 SSD 写入减少 20%～37%**（双赢）；容量宽松时写入减少 15%～22%，代价是命中率下降 0.3～1.5 个点 |
+
+**3. Prefill 调度（`prefill_sched.py`，真实到达时间回放，8 个引擎，相对开源版 FIFO）**
+
+| 负载 | SRPT：平均 / P99 / 最大 1% 请求 | SRPT+老化：平均 / P99 / 最大 1% 请求 |
+|---|---|---|
+| 70% | −8%～−22% / +16%～+39% / ×1.5 | −10%～−23% / +12%～+22% / ×1.3 |
+| 85% | −40%～−56% / −28%～+24% / ×2.0～2.4 | −33%～−46% / −17%～+14% / ×1.5 |
+| 95% | −72%～−80% / −1%～−52% / ×2.6～3.5 | −36%～−45% / −2%～−19% / ×1.5～1.6 |
+
+结论和操作系统教科书一致：SRPT 显著降低平均 TTFT，但会饿着长请求；老化用一部分平均收益换来尾延迟和公平。（DeepSeek 线上的 PLB 是动态分档且不开源，这里没有和它比较。）
+
+### 查新
+
+- Prefill 的 SRPT/SPF+老化：已有 Prophet、Nexus（arXiv 2507.06608）、arXiv 2606.09061、Chimera（arXiv 2603.22206）。
+- KV SSD 层选择性准入：arXiv 2609.28870 明确主张"严格选择性准入"，arXiv 2609.07175 研究把写入和未命中解耦。用 CPU 死块预测这个名义做 KV 准入的没查到，但思路已很接近。
+
+**本轮结论**：借鉴 CPU/OS 思路是对的方向，但能用的思路在 LLM serving 领域基本都已有人做过。本轮的价值在于用真实生产 trace 在 DeepInfer 的设定下做了定量验证，并测出了"照搬就会失败"的边界（S3-FIFO、纯 SRPT）。

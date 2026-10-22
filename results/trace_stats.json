@@ -1,0 +1,42 @@
+{
+ "conversation": {
+  "requests": 12031,
+  "blocks_written": 182790,
+  "one_hit_wonder_fraction": 0.758,
+  "ideal_token_hit_rate": 0.374,
+  "top10pct_blocks_share_of_reuses": 0.751,
+  "reuse_prob_by_block_position": {
+   "0-3": 0.308,
+   "4-7": 0.298,
+   "8-11": 0.265,
+   "12-15": 0.24,
+   "16-19": 0.224,
+   "20-23": 0.213,
+   "24-27": 0.214,
+   "28-31": 0.214,
+   "32-35": 0.223,
+   "36-39": 0.216,
+   "40-43": 0.208
+  }
+ },
+ "toolagent": {
+  "requests": 23608,
+  "blocks_written": 183300,
+  "one_hit_wonder_fraction": 0.785,
+  "ideal_token_hit_rate": 0.571,
+  "top10pct_blocks_share_of_reuses": 0.907,
+  "reuse_prob_by_block_position": {
+   "0-3": 0.317,
+   "4-7": 0.231,
+   "8-11": 0.266,
+   "12-15": 0.13,
+   "16-19": 0.219,
+   "20-23": 0.214,
+   "24-27": 0.216,
+   "28-31": 0.214,
+   "32-35": 0.222,
+   "36-39": 0.215,
+   "40-43": 0.2
+  }
+ }
+}

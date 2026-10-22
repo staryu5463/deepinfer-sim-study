@@ -1,0 +1,204 @@
+{
+ "conversation": {
+  "unique_full_blocks": 170899,
+  "rows": [
+   {
+    "ssd_cap_%": 2.0,
+    "dram_cap_%": 1.0,
+    "lru_hit": 0.124,
+    "gen_hit": 0.1386,
+    "hit_delta_pts": 1.45,
+    "ssd_write_reduction_%": 92.3
+   },
+   {
+    "ssd_cap_%": 2.0,
+    "dram_cap_%": 3.0,
+    "lru_hit": 0.1971,
+    "gen_hit": 0.207,
+    "hit_delta_pts": 1.0,
+    "ssd_write_reduction_%": 87.0
+   },
+   {
+    "ssd_cap_%": 5.0,
+    "dram_cap_%": 1.0,
+    "lru_hit": 0.2231,
+    "gen_hit": 0.1922,
+    "hit_delta_pts": -3.09,
+    "ssd_write_reduction_%": 86.0
+   },
+   {
+    "ssd_cap_%": 5.0,
+    "dram_cap_%": 3.0,
+    "lru_hit": 0.2567,
+    "gen_hit": 0.2517,
+    "hit_delta_pts": -0.5,
+    "ssd_write_reduction_%": 83.4
+   },
+   {
+    "ssd_cap_%": 10.0,
+    "dram_cap_%": 1.0,
+    "lru_hit": 0.2919,
+    "gen_hit": 0.2122,
+    "hit_delta_pts": -7.97,
+    "ssd_write_reduction_%": 80.8
+   },
+   {
+    "ssd_cap_%": 10.0,
+    "dram_cap_%": 3.0,
+    "lru_hit": 0.3093,
+    "gen_hit": 0.2675,
+    "hit_delta_pts": -4.17,
+    "ssd_write_reduction_%": 79.5
+   },
+   {
+    "ssd_cap_%": 20.0,
+    "dram_cap_%": 1.0,
+    "lru_hit": 0.3555,
+    "gen_hit": 0.2222,
+    "hit_delta_pts": -13.33,
+    "ssd_write_reduction_%": 76.0
+   },
+   {
+    "ssd_cap_%": 20.0,
+    "dram_cap_%": 3.0,
+    "lru_hit": 0.3587,
+    "gen_hit": 0.2758,
+    "hit_delta_pts": -8.3,
+    "ssd_write_reduction_%": 75.9
+   },
+   {
+    "ssd_cap_%": 50.0,
+    "dram_cap_%": 1.0,
+    "lru_hit": 0.3703,
+    "gen_hit": 0.2248,
+    "hit_delta_pts": -14.55,
+    "ssd_write_reduction_%": 74.5
+   },
+   {
+    "ssd_cap_%": 50.0,
+    "dram_cap_%": 3.0,
+    "lru_hit": 0.3704,
+    "gen_hit": 0.2772,
+    "hit_delta_pts": -9.32,
+    "ssd_write_reduction_%": 74.6
+   },
+   {
+    "ssd_cap_%": 100.0,
+    "dram_cap_%": 1.0,
+    "lru_hit": 0.3734,
+    "gen_hit": 0.2248,
+    "hit_delta_pts": -14.86,
+    "ssd_write_reduction_%": 74.2
+   },
+   {
+    "ssd_cap_%": 100.0,
+    "dram_cap_%": 3.0,
+    "lru_hit": 0.3734,
+    "gen_hit": 0.2772,
+    "hit_delta_pts": -9.62,
+    "ssd_write_reduction_%": 74.3
+   }
+  ]
+ },
+ "toolagent": {
+  "unique_full_blocks": 159983,
+  "rows": [
+   {
+    "ssd_cap_%": 2.0,
+    "dram_cap_%": 1.0,
+    "lru_hit": 0.4073,
+    "gen_hit": 0.4182,
+    "hit_delta_pts": 1.09,
+    "ssd_write_reduction_%": 91.3
+   },
+   {
+    "ssd_cap_%": 2.0,
+    "dram_cap_%": 3.0,
+    "lru_hit": 0.4612,
+    "gen_hit": 0.467,
+    "hit_delta_pts": 0.59,
+    "ssd_write_reduction_%": 85.6
+   },
+   {
+    "ssd_cap_%": 5.0,
+    "dram_cap_%": 1.0,
+    "lru_hit": 0.4791,
+    "gen_hit": 0.4556,
+    "hit_delta_pts": -2.35,
+    "ssd_write_reduction_%": 84.4
+   },
+   {
+    "ssd_cap_%": 5.0,
+    "dram_cap_%": 3.0,
+    "lru_hit": 0.5034,
+    "gen_hit": 0.5019,
+    "hit_delta_pts": -0.14,
+    "ssd_write_reduction_%": 81.8
+   },
+   {
+    "ssd_cap_%": 10.0,
+    "dram_cap_%": 1.0,
+    "lru_hit": 0.5294,
+    "gen_hit": 0.4706,
+    "hit_delta_pts": -5.87,
+    "ssd_write_reduction_%": 79.1
+   },
+   {
+    "ssd_cap_%": 10.0,
+    "dram_cap_%": 3.0,
+    "lru_hit": 0.5408,
+    "gen_hit": 0.5119,
+    "hit_delta_pts": -2.89,
+    "ssd_write_reduction_%": 78.1
+   },
+   {
+    "ssd_cap_%": 20.0,
+    "dram_cap_%": 1.0,
+    "lru_hit": 0.5677,
+    "gen_hit": 0.476,
+    "hit_delta_pts": -9.17,
+    "ssd_write_reduction_%": 75.7
+   },
+   {
+    "ssd_cap_%": 20.0,
+    "dram_cap_%": 3.0,
+    "lru_hit": 0.5681,
+    "gen_hit": 0.5143,
+    "hit_delta_pts": -5.39,
+    "ssd_write_reduction_%": 75.8
+   },
+   {
+    "ssd_cap_%": 50.0,
+    "dram_cap_%": 1.0,
+    "lru_hit": 0.57,
+    "gen_hit": 0.4765,
+    "hit_delta_pts": -9.35,
+    "ssd_write_reduction_%": 75.5
+   },
+   {
+    "ssd_cap_%": 50.0,
+    "dram_cap_%": 3.0,
+    "lru_hit": 0.57,
+    "gen_hit": 0.5148,
+    "hit_delta_pts": -5.52,
+    "ssd_write_reduction_%": 75.6
+   },
+   {
+    "ssd_cap_%": 100.0,
+    "dram_cap_%": 1.0,
+    "lru_hit": 0.5703,
+    "gen_hit": 0.4765,
+    "hit_delta_pts": -9.38,
+    "ssd_write_reduction_%": 75.4
+   },
+   {
+    "ssd_cap_%": 100.0,
+    "dram_cap_%": 3.0,
+    "lru_hit": 0.5703,
+    "gen_hit": 0.5148,
+    "hit_delta_pts": -5.55,
+    "ssd_write_reduction_%": 75.6
+   }
+  ]
+ }
+}

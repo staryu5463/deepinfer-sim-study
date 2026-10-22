@@ -1,0 +1,206 @@
+{
+ "conversation": {
+  "test_auc": 0.615,
+  "test_base_reuse_rate": 0.222,
+  "rows": [
+   {
+    "cap_%": 5.0,
+    "tau": 0.02,
+    "hit_admit_all": 0.205,
+    "hit_bypass": 0.2058,
+    "hit_delta_pts": 0.09,
+    "ssd_write_reduction_%": 1.5
+   },
+   {
+    "cap_%": 5.0,
+    "tau": 0.05,
+    "hit_admit_all": 0.205,
+    "hit_bypass": 0.2089,
+    "hit_delta_pts": 0.4,
+    "ssd_write_reduction_%": 6.3
+   },
+   {
+    "cap_%": 5.0,
+    "tau": 0.1,
+    "hit_admit_all": 0.205,
+    "hit_bypass": 0.2213,
+    "hit_delta_pts": 1.63,
+    "ssd_write_reduction_%": 19.8
+   },
+   {
+    "cap_%": 5.0,
+    "tau": 0.2,
+    "hit_admit_all": 0.205,
+    "hit_bypass": 0.2228,
+    "hit_delta_pts": 1.78,
+    "ssd_write_reduction_%": 33.3
+   },
+   {
+    "cap_%": 20.0,
+    "tau": 0.02,
+    "hit_admit_all": 0.3684,
+    "hit_bypass": 0.3703,
+    "hit_delta_pts": 0.19,
+    "ssd_write_reduction_%": 2.1
+   },
+   {
+    "cap_%": 20.0,
+    "tau": 0.05,
+    "hit_admit_all": 0.3684,
+    "hit_bypass": 0.3706,
+    "hit_delta_pts": 0.22,
+    "ssd_write_reduction_%": 7.7
+   },
+   {
+    "cap_%": 20.0,
+    "tau": 0.1,
+    "hit_admit_all": 0.3684,
+    "hit_bypass": 0.3649,
+    "hit_delta_pts": -0.35,
+    "ssd_write_reduction_%": 21.8
+   },
+   {
+    "cap_%": 20.0,
+    "tau": 0.2,
+    "hit_admit_all": 0.3684,
+    "hit_bypass": 0.3464,
+    "hit_delta_pts": -2.2,
+    "ssd_write_reduction_%": 35.8
+   },
+   {
+    "cap_%": 100.0,
+    "tau": 0.02,
+    "hit_admit_all": 0.4005,
+    "hit_bypass": 0.4001,
+    "hit_delta_pts": -0.04,
+    "ssd_write_reduction_%": 1.8
+   },
+   {
+    "cap_%": 100.0,
+    "tau": 0.05,
+    "hit_admit_all": 0.4005,
+    "hit_bypass": 0.3979,
+    "hit_delta_pts": -0.26,
+    "ssd_write_reduction_%": 7.3
+   },
+   {
+    "cap_%": 100.0,
+    "tau": 0.1,
+    "hit_admit_all": 0.4005,
+    "hit_bypass": 0.387,
+    "hit_delta_pts": -1.35,
+    "ssd_write_reduction_%": 21.3
+   },
+   {
+    "cap_%": 100.0,
+    "tau": 0.2,
+    "hit_admit_all": 0.4005,
+    "hit_bypass": 0.3639,
+    "hit_delta_pts": -3.66,
+    "ssd_write_reduction_%": 35.3
+   }
+  ]
+ },
+ "toolagent": {
+  "test_auc": 0.635,
+  "test_base_reuse_rate": 0.22,
+  "rows": [
+   {
+    "cap_%": 5.0,
+    "tau": 0.02,
+    "hit_admit_all": 0.4767,
+    "hit_bypass": 0.4776,
+    "hit_delta_pts": 0.09,
+    "ssd_write_reduction_%": 2.4
+   },
+   {
+    "cap_%": 5.0,
+    "tau": 0.05,
+    "hit_admit_all": 0.4767,
+    "hit_bypass": 0.4849,
+    "hit_delta_pts": 0.82,
+    "ssd_write_reduction_%": 14.5
+   },
+   {
+    "cap_%": 5.0,
+    "tau": 0.1,
+    "hit_admit_all": 0.4767,
+    "hit_bypass": 0.4921,
+    "hit_delta_pts": 1.54,
+    "ssd_write_reduction_%": 30.8
+   },
+   {
+    "cap_%": 5.0,
+    "tau": 0.2,
+    "hit_admit_all": 0.4767,
+    "hit_bypass": 0.4916,
+    "hit_delta_pts": 1.49,
+    "ssd_write_reduction_%": 37.2
+   },
+   {
+    "cap_%": 20.0,
+    "tau": 0.02,
+    "hit_admit_all": 0.5856,
+    "hit_bypass": 0.5869,
+    "hit_delta_pts": 0.13,
+    "ssd_write_reduction_%": 3.1
+   },
+   {
+    "cap_%": 20.0,
+    "tau": 0.05,
+    "hit_admit_all": 0.5856,
+    "hit_bypass": 0.5828,
+    "hit_delta_pts": -0.28,
+    "ssd_write_reduction_%": 15.7
+   },
+   {
+    "cap_%": 20.0,
+    "tau": 0.1,
+    "hit_admit_all": 0.5856,
+    "hit_bypass": 0.5742,
+    "hit_delta_pts": -1.14,
+    "ssd_write_reduction_%": 32.6
+   },
+   {
+    "cap_%": 20.0,
+    "tau": 0.2,
+    "hit_admit_all": 0.5856,
+    "hit_bypass": 0.568,
+    "hit_delta_pts": -1.76,
+    "ssd_write_reduction_%": 39.2
+   },
+   {
+    "cap_%": 100.0,
+    "tau": 0.02,
+    "hit_admit_all": 0.5919,
+    "hit_bypass": 0.5916,
+    "hit_delta_pts": -0.03,
+    "ssd_write_reduction_%": 2.7
+   },
+   {
+    "cap_%": 100.0,
+    "tau": 0.05,
+    "hit_admit_all": 0.5919,
+    "hit_bypass": 0.5868,
+    "hit_delta_pts": -0.51,
+    "ssd_write_reduction_%": 15.4
+   },
+   {
+    "cap_%": 100.0,
+    "tau": 0.1,
+    "hit_admit_all": 0.5919,
+    "hit_bypass": 0.5774,
+    "hit_delta_pts": -1.46,
+    "ssd_write_reduction_%": 32.3
+   },
+   {
+    "cap_%": 100.0,
+    "tau": 0.2,
+    "hit_admit_all": 0.5919,
+    "hit_bypass": 0.5703,
+    "hit_delta_pts": -2.17,
+    "ssd_write_reduction_%": 38.8
+   }
+  ]
+ }
+}

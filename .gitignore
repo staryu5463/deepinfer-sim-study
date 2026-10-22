@@ -2,3 +2,5 @@ __pycache__/
 *.pyc
 # 模型配置从 Hugging Face 下载，不随仓库分发
 v41_config.json
+# Mooncake 生产 trace 不随仓库分发（见 README 的下载说明）
+data/
