@@ -92,6 +92,8 @@ class Accept:
     kappa: float = 0.35
     s_nu: float = 0.6
     s_eta: float = 0.6  # confidence head 误差（logit 空间）
+    conf_scale: float = 1.0  # confidence head 的系统性偏差：conf_logit = conf_scale * logit + conf_bias + 噪声
+    conf_bias: float = 0.0
 
 
 @dataclass
@@ -149,7 +151,7 @@ class World:
         j = np.arange(NEXTN)
         logit = self.mu[..., None] + self.eps[..., None] - acc.kappa * j + acc.s_nu * rng.standard_normal((T, S, NEXTN))
         self.pi = 1 / (1 + np.exp(-logit))
-        self.conf = 1 / (1 + np.exp(-(logit + acc.s_eta * rng.standard_normal((T, S, NEXTN)))))
+        self.conf = 1 / (1 + np.exp(-(acc.conf_scale * logit + acc.conf_bias + acc.s_eta * rng.standard_normal((T, S, NEXTN)))))
         self.U = rng.random((T, S, NEXTN))
         self.fwd_noise = rng.standard_normal(T)
         self.smp_noise = rng.standard_normal(T)
@@ -232,6 +234,40 @@ class CtxAwareEstimator:
             A = Xs.T @ Xs + self.ridge * len(y) * np.eye(3)
             th = np.linalg.solve(A, Xs.T @ y) / scale
             self.theta = np.maximum(th, 0.0)
+
+
+class Recalibrator:
+    """在线校准 confidence：用每个被验证 draft 的 accept_prob（DeepInfer 已在 finalize 里算出，用于 batch_confidence_error）
+    做按位置分桶的保序回归。每个位置 20 个桶，桶内用 EMA 估 accept_prob 的均值，再做累积最大保证单调。"""
+
+    def __init__(self, bins: int = 20, ema: float = 0.01, warm: int = 50) -> None:
+        self.bins, self.ema, self.warm = bins, ema, warm
+        self.mean = np.tile((np.arange(bins) + 0.5) / bins, (NEXTN, 1))
+        self.count = np.zeros((NEXTN, bins))
+
+    def _bin(self, conf: np.ndarray) -> np.ndarray:
+        return np.minimum((conf * self.bins).astype(int), self.bins - 1)
+
+    def update(self, conf: np.ndarray, accept_prob: np.ndarray, verified_mask: np.ndarray) -> None:
+        b = self._bin(conf)
+        for j in range(NEXTN):
+            m = verified_mask[:, j]
+            if not m.any():
+                continue
+            bj, pj = b[m, j], accept_prob[m, j]
+            sums = np.bincount(bj, weights=pj, minlength=self.bins)
+            cnts = np.bincount(bj, minlength=self.bins)
+            nz = cnts > 0
+            batch_mean = sums[nz] / cnts[nz]
+            self.mean[j, nz] += self.ema * cnts[nz] / (1 + self.ema * cnts[nz]) * (batch_mean - self.mean[j, nz])
+            self.count[j] += cnts
+
+    def __call__(self, conf: np.ndarray) -> np.ndarray:
+        if self.count.sum() < self.warm:
+            return conf
+        mono = np.maximum.accumulate(self.mean, axis=1)
+        b = self._bin(conf)
+        return np.take_along_axis(mono[None, :, :].repeat(conf.shape[0], 0), b[..., None], axis=2)[..., 0]
 
 
 # ---------------------------------------------------------------- 调度策略
@@ -376,7 +412,8 @@ def simulate(world: World, hw: HW, policy: str, warmup: int) -> dict:
     baseline = np.zeros(hw.graphs[-1] + 1)
     baseline[hw.graphs] = hw.B(hw.graphs) * (1 + 0.003 * rng.standard_normal(len(hw.graphs)))  # profile 值带小噪声
     ctx = {"fwd": ForwardRuntimeEstimator(), "smp": SamplerEstimator(), "ca": CtxAwareEstimator(), "baseline": baseline}
-    fn = POLICIES[policy]
+    recal = Recalibrator() if policy.endswith("_recal") else None
+    fn = POLICIES[policy.removesuffix("_recal")]
     tot_tok = tot_time = tot_ver = 0.0
     n_steps = 0
     prev_conf = world.conf[0]
@@ -384,7 +421,11 @@ def simulate(world: World, hw: HW, policy: str, warmup: int) -> dict:
         order = np.argsort(-world.L[t], kind="stable")  # scheduler.hpp：按长度降序
         L = world.L[t][order]
         fresh = world.fresh[t][order]
-        v = StepView(world.S, L, prev_conf[order], world.conf[t][order], fresh)
+        cur_conf = world.conf[t][order]
+        prev_c = prev_conf[order]
+        if recal is not None:
+            cur_conf, prev_c = recal(cur_conf), recal(prev_c)
+        v = StepView(world.S, L, prev_c, cur_conf, fresh)
         ctx["pi_t"] = world.pi[t][order]
         q = fn(v, hw, ctx)
         G = int(q.sum())
@@ -402,6 +443,9 @@ def simulate(world: World, hw: HW, policy: str, warmup: int) -> dict:
         ctx["smp"].update(world.S, smp)
         w = pairs(L) / 1e6
         ctx["ca"].update(np.array([G, float((q * w).sum()), float(w.sum())]), fwd - baseline[g])
+        if recal is not None:
+            ver_mask = np.arange(NEXTN) < ver[:, None]
+            recal.update(world.conf[t][order], world.pi[t][order], ver_mask)
         prev_conf = world.conf[t]
         if t >= warmup:
             tot_tok += tokens

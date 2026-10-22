@@ -4,16 +4,34 @@ A simulation study of optimization opportunities in [DeepSeek DeepInfer](https:/
 
 > **Disclaimer.** All results come from simulators, not from real SM100 hardware. The simulators are calibrated against the numbers DeepSeek published in [`doc/inference_deployment_qa.md`](https://github.com/deepseek-ai/DeepInfer/blob/main/doc/inference_deployment_qa.md), and routing statistics are synthetic. Treat every number as a hypothesis to test on real hardware. Not affiliated with DeepSeek.
 
-## Key findings
+## Main result: speculative-decoding verification length as a cross-rank load balancer
 
-| # | Finding | Simulated effect |
+The [DSpark paper](https://arxiv.org/abs/2607.05147) assumes, in a footnote, that engine throughput depends mainly on batch size because "decode load balancers keep both request counts and total context lengths roughly balanced across data-parallel (DP) ranks". This study finds that the assumption does not hold under wide expert parallelism (EP):
+
+1. **Per-rank decisions under global synchronization.** Each DP rank runs its own DSpark scheduler, but EP synchronizes every MoE layer on the slowest rank. The runtime feedback (`forward_ms`) is the *global* step time including waiting, while the profiled baseline assumes all ranks run the same graph size. As a result, lightly loaded ranks see a large residual and verify *fewer* drafts, and the straggler verifies *more*. Even with perfectly balanced load, DSpark spreads per-rank token counts by 3.2% (vs 0.4% with fixed length).
+2. **Fix: water-fill to a shared attention-time level.** Each step, ranks all-reduce 2 scalars and fill drafts up to a common level H, updated by the Dinkelbach condition dE/dH = λ·dT/dH. This reaches 85–100% of a centralized upper bound.
+3. **Verification length becomes a free knob for absorbing DP-rank imbalance**, which request-level load balancing cannot fix within a step.
+
+| Setting (simulated) | Throughput vs DSpark | TPOT vs DSpark |
 |---|---|---|
-| 1 | DSpark (speculative decoding) chooses verification length independently per DP rank, while EP synchronizes every layer on the slowest rank. Its timer sees global step time, so idle ranks verify *less* and stragglers verify *more*. Coordinating with 2 scalars per step fixes this. | **+1.2% to +4.1%** throughput; recovers 65–92% of the loss from cross-rank imbalance; robust to ±33% cost-model error |
-| 2 | EPLB: load-aware replica routing combined with more redundant experts per GPU | MoE imbalance (`moe_lb`) 1.087 → **1.004** (communication cost not counted) |
-| 3 | EPLB: weight migration costs ~12 ms per rearrangement, so a shorter rearrangement interval is nearly free | `moe_lb` 1.087 → 1.071 at a 2500-step interval |
-| 4 | In `csrc/engine/scheduler.hpp`, the decode preemption comment says "shortest output", but the code preempts the longest | — |
+| EP64, perfectly balanced | +0.8% to +1.2% | −0.8% |
+| EP64, ±10% request-count imbalance | **+3.0%** (recovers ~92% of the imbalance loss) | **−2.9%** |
+| EP64, long-context mix, ±10% | **+4.1%** | — |
+| EP8, ±10% | +1.4% | −1.4% |
+| model error: assumed attention share off by ±33% | +2.8% (vs +3.0% exact) | — |
 
-The verifier also **rejected** several ideas: context-cost-aware draft ranking (upper bound only +0.3%), greedy dynamic routing (worse than baseline), and local search on top of EPLB (better in-sample, no out-of-sample gain, i.e. overfitting). DeepSeek's step-aware expert placement was independently validated.
+Gains grow with EP size (straggler cost is a max over ranks), and latency improves together with throughput. We found no prior work coordinating speculative verification budgets across DP ranks under EP; SGLang sets draft parameters globally and statically.
+
+## Other findings
+
+| Finding | Status |
+|---|---|
+| Online recalibration of the DSpark confidence head using `accept_prob`, which DeepInfer already computes per verified draft (only logged as `batch_confidence_error`). DSpark's Sequential Temperature Scaling is offline. | Insurance, not a demonstrated gain: the published table shows no evidence of miscalibration (fitted bias ≈ 0). If live traffic drifts, it recovers up to 6 points of DSpark's gain at high concurrency, and costs nothing when calibrated. Related: [AdaFlash](https://arxiv.org/abs/2607.19223) updates a length head online. |
+| EPLB `moe_lb` 1.09 ≈ 1.06 per-step sampling noise + 0.03 statistics lag; per-step replica routing plus more redundancy reaches 1.004 | **Direction already known**: DeepSeek's own LPLB, [SGLang Waterfill/LPLB](https://www.lmsys.org/blog/2026-06-26-waterfill-lplb/), [UltraEP](https://arxiv.org/html/2606.04101). Our contribution is the quantitative decomposition. |
+| Weight migration costs ~12 ms per rearrangement, so a shorter interval is nearly free (`moe_lb` 1.087 → 1.071 at 2500 steps) | Config-only change |
+| `csrc/engine/scheduler.hpp`: preemption comment says "shortest output", code preempts the longest | Code fact |
+
+**Rejected by the verifier**: context-cost-aware draft ranking (upper bound only +0.3%), greedy dynamic routing (worse than baseline), local search on top of EPLB (better in-sample, no out-of-sample gain, i.e. overfitting), confidence miscalibration as the explanation for DSpark's −1.5% at concurrency 16 (not supported). DeepSeek's step-aware expert placement was independently validated.
 
 ## Reproduce
 
@@ -29,6 +47,8 @@ python experiments_dspark.py                             # DSpark single-rank A/
 python mr_experiments.py                                 # multi-rank coordination A/B
 python eplb_interval.py results/eplb_interval.json       # EPLB interval vs dynamic routing
 python eplb_ls_redundancy.py                             # EPLB redundancy x routing
+python mr_latency_scale.py                               # coordination: latency and EP size
+python calibrate_dspark_v2.py                            # does confidence miscalibration explain the data?
 ```
 
 A CUDA GPU is recommended for the EPLB simulator (token-level routing runs in torch); everything else runs on CPU. Results from our runs are in `results/`.
@@ -121,3 +141,16 @@ A CUDA GPU is recommended for the EPLB simulator (token-level routing runs in to
 2. 跨 rank 协调：先在 64 卡上打出各 rank 的 attention 计时（`decode_core_attn` 等 timer 已经有了），确认确实存在拖尾等待，再在 `MTPVarlen::schedule` 里接入两个标量的 all-reduce。
 3. 动态分流要改 `sm100_mega_gate.cuh` 的副本选择逻辑，并测出额外的计数交换开销。
 4. 路由统计用的是合成数据，应该换成真实的路由 trace 重新校准。
+
+## 第三轮：创新点与查新（2026-10-22）
+
+| 想法 | 查新结果 | 结论 |
+|---|---|---|
+| 跨 rank 协调验证长度（把投机验证长度当成 rank 间负载均衡的旋钮） | 没找到前人工作。DSpark 论文脚注明确假设各 DP rank 已经由负载均衡器调平；SGLang 的 draft 参数是全局静态的 | **本研究的主要创新点** |
+| 用现成的 accept_prob 在线校准 confidence head | DSpark 的 STS 是离线校准；AdaFlash 有在线更新长度头的做法 | 属于增量改进；DeepSeek 公开的数据里看不出有偏差，只当作"保险" |
+| EPLB 每步动态分流 + 多放冗余 | DeepSeek 自己的 LPLB、SGLang Waterfill、UltraEP 都已在做 | 不新；我们的贡献只在定量拆解 |
+| 语法感知的验证截断（JSON/工具调用中注定被拒的草稿不占验证名额） | 未查到针对 DSpark 的做法 | 想法成立（`sampler.py:366-376` 到验证时才检查语法），但 ZOS 下需要改 GPU 侧，也没有真实模型可以测非法草稿的比例，**未验证** |
+
+补充检验（`mr_latency_scale.py`）：协调方案在提升吞吐的同时降低每用户延迟（TPOT −0.2% ~ −2.9%），没有任何设置变差；EP 越大收益越大（EP8 +0.2% ~ +1.4%，EP64 +0.8% ~ +3.0%）。
+
+扩展校准（`calibrate_dspark_v2.py`）：加入 confidence 偏差参数后 loss 只从 25.9 降到 23.2，拟合出的偏差约为 0，仍然无法复现 conc=16 的 −1.5%。所以"head 没校准好"这个解释不被数据支持。

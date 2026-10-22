@@ -174,7 +174,8 @@ def simulate(worlds, hw: d.HW, mr: MR, policy: str) -> dict:
             tot_time += T
             Gstd.append(float(np.std([q.sum() for q in qs]) / np.mean([q.sum() for q in qs])))
             n += 1
-    return {"throughput_per_rank": tot_tok / tot_time * 1e3 / R, "G_cv_across_ranks": float(np.mean(Gstd))}
+    return {"throughput_per_rank": tot_tok / tot_time * 1e3 / R, "G_cv_across_ranks": float(np.mean(Gstd)), "step_ms": tot_time / n,
+            "tpot_ms": tot_time / n / (tot_tok / n / sum(w.S for w in worlds))}
 
 
 def _true_time(hw, mr, views, qs, noise=1.0, t=0, worlds=None, return_parts=False):
