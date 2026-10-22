@@ -250,3 +250,30 @@ mkdir -p data && for f in conversation_trace toolagent_trace; do curl -L -o data
    - 路由层：把确定性的贪心分配换成随机两选一（P2C），无论有几个路由器，损失都压在约 3.4%～5.9%。这是经典做法，不新。
    - 每步层：跨卡协调验证长度（第三轮的创新点），在 P2C 的基础上再把损失压到约 2%。
 4. **对第三轮结论的修正**：第三轮假设的"请求数 ±10%"对应的是多路由器的情形；在单一统一路由器下，协调方案的收益只有 +0.7～1.5%，没有之前说的 +3%。
+
+## 第七轮：架构层——decode 的真正瓶颈是"胶水延迟"（`decode_glue.py`）
+
+前六轮都在现有架构下调调度、调参数。这一轮从架构层找根本瓶颈。
+
+**数据**：DeepInfer 仓库自带的两张 decode 帕累托图（`doc/images/decode_pareto.png`、`wide_ep_decode_pareto.png`；context 131K，nextn=3 固定，τ=3.25）。每步时间 = τ / 每用户速度。权重读取量按 `v41_config.json` 计算。
+
+**交叉验证**：小 batch 时 EP8 比 EP64 每步慢 3.66 ms；EP8 每卡多读约 33 GB 的路由专家权重，两者相除，隐含带宽约 9 TB/s，与 B200 HBM 峰值（约 8 TB/s）同一量级（误差约 12%）。这说明"按配置算权重读取量"的拆解方法是对的。
+
+**拆解（EP64）**
+
+| | 每步时间 | 读权重 | 其余（"胶水"） |
+|---|---|---|---|
+| 小 batch（每卡 8 个请求） | 10.0 ms | 1.7 ms | **8.3 ms（83%）** |
+| 线上工作点（每卡约 61 个请求） | 13.0 ms | 1.7 ms | **8.3 ms（64%）** |
+
+"胶水"指既不是算力、也不是显存带宽的时间：kernel 边界与尾部空转、层间同步、EP 通信延迟、草稿模型和采样的串行部分。40 层 × 每层几十个 kernel，平均每层约 200 微秒。**结论：DeepSeek decode 的根本瓶颈是串行的胶水延迟，不是算力，也不是带宽。** DeepInfer 开源版的 decode 是单 batch 按层顺序执行，没有双 micro-batch 流水重叠（DeepSeek V3 时期的推理系统用过）。
+
+**架构方向与上界投影**（保持每用户 230 tok/s 不变；以官方图的设置为基准）
+
+| 架构方向 | 机制 | 每卡吞吐上界 | 先例 |
+|---|---|---|---|
+| 整层 / 整模型持久化 megakernel | 消除 kernel 边界、在 tile 粒度上跨算子流水 | 消掉 25% 胶水 +35%；消掉 50% +69%；消掉 75% +96% | Hazy Research "No Bubbles" megakernel、Mirage Persistent Kernel（2025）；DeepInfer 已有 Mega MoE / Mega Gate / Mega mHC，方向一致 |
+| 双 micro-batch 流水重叠（TBO） | 一个 batch 的胶水被另一个 batch 的计算填满（代价：权重多读一遍） | 理论上界 +94%；SGLang 在 V3 上实测约 +27%～35% | DeepSeek V3 推理系统、SGLang TBO |
+| 模型与系统协同设计 | 胶水 ∝ 串行层数：attention 与 MoE 并行的块（PaLM / GPT-J 式）、更少更宽的层 | 每 token 的胶水按串行深度成比例下降 | — |
+
+**说明与局限**：投影是上界，假设胶水与 batch 无关、可被消除或重叠，且没有计入计算与访存的争用；胶水内部各成分（通信、kernel 边界、草稿、采样）各占多少，需要在 SM100 上用 `examples/benchmark.py` 打 trace 才能拆开。对我们自己的模型架构研究也有一条直接启示：**在宽 EP 的 decode 中，深度是昂贵的**。循环 / 重复层会线性增加串行胶水，这是设计时必须算进去的成本。

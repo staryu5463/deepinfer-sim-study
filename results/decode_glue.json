@@ -1,0 +1,63 @@
+{
+ "weights_per_step_GB": {
+  "EP64": 13.88,
+  "EP8": 46.73,
+  "local_experts": [
+   7,
+   52
+  ]
+ },
+ "cross_check": {
+  "small_batch_gap_ms(EP8-EP64)": 3.66,
+  "implied_HBM_bandwidth_TBps": 8.99,
+  "note": "B200 HBM3e 峰值约 8 TB/s：时间差几乎完全被多读的专家权重解释"
+ },
+ "EP64_small_batch_step_decomposition_ms": {
+  "step(8 req/rank)": 10.0,
+  "weight_reads": 1.74,
+  "glue(other)": 8.26,
+  "glue_share_%": 82.6
+ },
+ "at_61_req_per_rank": {
+  "step_ms": 13.0,
+  "glue_ms": 8.26,
+  "glue_share_%": 63.6
+ },
+ "projection_at_230_tok_s_per_user": {
+  "baseline(today)": {
+   "req_per_rank": 76,
+   "tok_s_per_gpu": 17380,
+   "step_ms": 14.12
+  },
+  "fusion: glue -25%": {
+   "req_per_rank": 102,
+   "tok_s_per_gpu": 23391,
+   "step_ms": 14.1,
+   "gain_vs_today_%": 35
+  },
+  "fusion: glue -50%": {
+   "req_per_rank": 128,
+   "tok_s_per_gpu": 29449,
+   "step_ms": 14.13,
+   "gain_vs_today_%": 69
+  },
+  "fusion: glue -75%": {
+   "req_per_rank": 148,
+   "tok_s_per_gpu": 34034,
+   "step_ms": 14.09,
+   "gain_vs_today_%": 96
+  },
+  "two-batch overlap (upper bound)": {
+   "req_per_rank": 146,
+   "tok_s_per_gpu": 33657,
+   "step_ms": 14.1,
+   "gain_vs_today_%": 94
+  },
+  "two-batch overlap + glue -50%": {
+   "req_per_rank": 146,
+   "tok_s_per_gpu": 33657,
+   "step_ms": 14.1,
+   "gain_vs_today_%": 94
+  }
+ }
+}
