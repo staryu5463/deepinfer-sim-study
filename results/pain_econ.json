@@ -1,0 +1,61 @@
+{
+ "consistency_check: 1.5M x (1-96%) vs 60K": 60000.00000000005,
+ "fleet_estimate": {
+  "prefill_gpus": 1196,
+  "decode_gpus": 1196,
+  "total_gpus": 2392,
+  "input_output_ratio": 107,
+  "requests_per_s": 23298,
+  "avg_output_tokens_per_request": 719,
+  "decode_concurrency_per_gpu": 61,
+  "revenue_per_day_usd": 2181481
+ },
+ "pain1_hit_rate_leverage": {
+  "+0.1pt hit": {
+   "prefill_compute_saved_%": 2.5,
+   "fleet_saved_%": 1.2,
+   "usd_per_day": 27269
+  },
+  "+0.5pt hit": {
+   "prefill_compute_saved_%": 12.5,
+   "fleet_saved_%": 6.2,
+   "usd_per_day": 136343
+  },
+  "+1.0pt hit": {
+   "prefill_compute_saved_%": 25.0,
+   "fleet_saved_%": 12.5,
+   "usd_per_day": 272685
+  }
+ },
+ "pain1_ttl_loss_chatbot": {
+  "0.5pt": "chatbot prefill compute +12%",
+  "1.0pt": "chatbot prefill compute +25%"
+ },
+ "pain2_load_balance": {
+  "throughput_lost_vs_balanced_%": 20,
+  "gpus_equivalent_if_fully_recovered": 598,
+  "usd_per_day_if_fully_recovered": 545370
+ },
+ "pain3_fault_blast_radius": {
+  "decode_gpu_failures_per_day": 0.57,
+  "gpu_minutes_lost_per_day": [
+   217,
+   725
+  ],
+  "share_of_decode_capacity_%": [
+   0.013,
+   0.042
+  ],
+  "requests_interrupted_per_failure": 7791
+ },
+ "pain4_structural_recompute": {
+  "new_tokens_per_request": 3080,
+  "structural_token_equiv": 128.0,
+  "share_of_prefill_compute_%": 4.2
+ },
+ "pain5_storage": {
+  "kv_bytes_per_token": 896.0,
+  "kv_read_GBps_per_prefill_gpu": 1.29,
+  "kv_written_TB_per_day_from_misses_and_outputs": 6851
+ }
+}
