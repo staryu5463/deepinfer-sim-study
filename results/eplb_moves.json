@@ -1,0 +1,14 @@
+{
+ "10000": {
+  "moved_slot_fraction": 0.986
+ },
+ "2500": {
+  "moved_slot_fraction": 0.98
+ },
+ "full_scale": {
+  "policy_compute_s_on_4070": 1.4,
+  "moved_experts_total_40_layers": 17669,
+  "bytes_per_gpu_GB": 4.89,
+  "transfer_ms_at_400GBps": 12.2
+ }
+}

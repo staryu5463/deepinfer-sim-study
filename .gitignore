@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+# 模型配置从 Hugging Face 下载，不随仓库分发
+v41_config.json
