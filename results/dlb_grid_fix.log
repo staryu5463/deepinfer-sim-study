@@ -1,0 +1,36 @@
+conversation/jsq_dep/stale0/coord_lite {"throughput_per_gpu": 13512.84, "user_tps": 221.522, "step_ms": 14.027, "loss_total_%": 1.667, "loss_attention_side_%": 0.243, "loss_moe_lb_%": 1.284, "conc_cv_across_ranks": 0.025}
+conversation/jsq_dep/stale0/dspark {"throughput_per_gpu": 13446.084, "user_tps": 220.428, "step_ms": 13.954, "loss_total_%": 2.359, "loss_attention_side_%": 0.991, "loss_moe_lb_%": 1.234, "conc_cv_across_ranks": 0.023}
+conversation/jsq_dep/stale20/coord_lite {"throughput_per_gpu": 12135.431, "user_tps": 198.941, "step_ms": 14.989, "loss_total_%": 7.26, "loss_attention_side_%": 2.808, "loss_moe_lb_%": 1.232, "conc_cv_across_ranks": 0.401}
+conversation/jsq_dep/stale20/dspark {"throughput_per_gpu": 11639.181, "user_tps": 190.806, "step_ms": 15.681, "loss_total_%": 14.59, "loss_attention_side_%": 10.931, "loss_moe_lb_%": 1.024, "conc_cv_across_ranks": 0.361}
+conversation/jsq_dep/stale70/coord_lite {"throughput_per_gpu": 10468.337, "user_tps": 171.612, "step_ms": 16.702, "loss_total_%": 17.958, "loss_attention_side_%": 11.137, "loss_moe_lb_%": 1.028, "conc_cv_across_ranks": 0.874}
+conversation/jsq_dep/stale70/dspark {"throughput_per_gpu": 9703.724, "user_tps": 159.077, "step_ms": 17.293, "loss_total_%": 25.337, "loss_attention_side_%": 19.026, "loss_moe_lb_%": 0.785, "conc_cv_across_ranks": 0.832}
+conversation/p2c/stale0/coord_lite {"throughput_per_gpu": 13492.594, "user_tps": 221.19, "step_ms": 14.029, "loss_total_%": 1.709, "loss_attention_side_%": 0.239, "loss_moe_lb_%": 1.283, "conc_cv_across_ranks": 0.035}
+conversation/p2c/stale0/dspark {"throughput_per_gpu": 13410.849, "user_tps": 219.85, "step_ms": 13.986, "loss_total_%": 2.618, "loss_attention_side_%": 1.203, "loss_moe_lb_%": 1.229, "conc_cv_across_ranks": 0.035}
+conversation/p2c/stale20/coord_lite {"throughput_per_gpu": 13416.151, "user_tps": 219.937, "step_ms": 14.061, "loss_total_%": 1.946, "loss_attention_side_%": 0.239, "loss_moe_lb_%": 1.279, "conc_cv_across_ranks": 0.066}
+conversation/p2c/stale20/dspark {"throughput_per_gpu": 13257.728, "user_tps": 217.34, "step_ms": 14.139, "loss_total_%": 3.744, "loss_attention_side_%": 2.119, "loss_moe_lb_%": 1.211, "conc_cv_across_ranks": 0.064}
+conversation/p2c/stale70/coord_lite {"throughput_per_gpu": 13218.52, "user_tps": 216.697, "step_ms": 14.167, "loss_total_%": 2.522, "loss_attention_side_%": 0.309, "loss_moe_lb_%": 1.278, "conc_cv_across_ranks": 0.139}
+conversation/p2c/stale70/dspark {"throughput_per_gpu": 12946.649, "user_tps": 212.24, "step_ms": 14.403, "loss_total_%": 5.857, "loss_attention_side_%": 3.883, "loss_moe_lb_%": 1.173, "conc_cv_across_ranks": 0.128}
+toolagent/jsq_dep/stale0/coord_lite {"throughput_per_gpu": 13381.111, "user_tps": 219.362, "step_ms": 14.152, "loss_total_%": 1.711, "loss_attention_side_%": 0.268, "loss_moe_lb_%": 1.271, "conc_cv_across_ranks": 0.031}
+toolagent/jsq_dep/stale0/dspark {"throughput_per_gpu": 13303.318, "user_tps": 218.087, "step_ms": 14.069, "loss_total_%": 2.421, "loss_attention_side_%": 1.034, "loss_moe_lb_%": 1.217, "conc_cv_across_ranks": 0.031}
+toolagent/jsq_dep/stale20/coord_lite {"throughput_per_gpu": 12731.449, "user_tps": 208.712, "step_ms": 14.451, "loss_total_%": 3.696, "loss_attention_side_%": 0.402, "loss_moe_lb_%": 1.247, "conc_cv_across_ranks": 0.217}
+toolagent/jsq_dep/stale20/dspark {"throughput_per_gpu": 12143.41, "user_tps": 199.072, "step_ms": 15.244, "loss_total_%": 10.811, "loss_attention_side_%": 7.882, "loss_moe_lb_%": 1.085, "conc_cv_across_ranks": 0.206}
+toolagent/jsq_dep/stale70/coord_lite {"throughput_per_gpu": 11102.488, "user_tps": 182.008, "step_ms": 16.016, "loss_total_%": 13.09, "loss_attention_side_%": 6.972, "loss_moe_lb_%": 1.118, "conc_cv_across_ranks": 0.637}
+toolagent/jsq_dep/stale70/dspark {"throughput_per_gpu": 10263.912, "user_tps": 168.261, "step_ms": 16.984, "loss_total_%": 22.247, "loss_attention_side_%": 16.935, "loss_moe_lb_%": 0.857, "conc_cv_across_ranks": 0.614}
+toolagent/p2c/stale0/coord_lite {"throughput_per_gpu": 13369.12, "user_tps": 219.166, "step_ms": 14.15, "loss_total_%": 1.732, "loss_attention_side_%": 0.259, "loss_moe_lb_%": 1.271, "conc_cv_across_ranks": 0.038}
+toolagent/p2c/stale0/dspark {"throughput_per_gpu": 13287.071, "user_tps": 217.821, "step_ms": 14.095, "loss_total_%": 2.677, "loss_attention_side_%": 1.26, "loss_moe_lb_%": 1.213, "conc_cv_across_ranks": 0.038}
+toolagent/p2c/stale20/coord_lite {"throughput_per_gpu": 13313.287, "user_tps": 218.251, "step_ms": 14.176, "loss_total_%": 1.913, "loss_attention_side_%": 0.259, "loss_moe_lb_%": 1.267, "conc_cv_across_ranks": 0.06}
+toolagent/p2c/stale20/dspark {"throughput_per_gpu": 13174.246, "user_tps": 215.971, "step_ms": 14.211, "loss_total_%": 3.588, "loss_attention_side_%": 2.005, "loss_moe_lb_%": 1.2, "conc_cv_across_ranks": 0.059}
+toolagent/p2c/stale70/coord_lite {"throughput_per_gpu": 13226.215, "user_tps": 216.823, "step_ms": 14.208, "loss_total_%": 2.151, "loss_attention_side_%": 0.262, "loss_moe_lb_%": 1.264, "conc_cv_across_ranks": 0.092}
+toolagent/p2c/stale70/dspark {"throughput_per_gpu": 12963.553, "user_tps": 212.517, "step_ms": 14.368, "loss_total_%": 4.899, "loss_attention_side_%": 3.125, "loss_moe_lb_%": 1.173, "conc_cv_across_ranks": 0.089}
+conversation/jsq_dep/stale0/coord_gain_% 0.5
+conversation/jsq_dep/stale20/coord_gain_% 4.26
+conversation/jsq_dep/stale70/coord_gain_% 7.88
+conversation/p2c/stale0/coord_gain_% 0.61
+conversation/p2c/stale20/coord_gain_% 1.19
+conversation/p2c/stale70/coord_gain_% 2.1
+toolagent/jsq_dep/stale0/coord_gain_% 0.58
+toolagent/jsq_dep/stale20/coord_gain_% 4.84
+toolagent/jsq_dep/stale70/coord_gain_% 8.17
+toolagent/p2c/stale0/coord_gain_% 0.62
+toolagent/p2c/stale20/coord_gain_% 1.06
+toolagent/p2c/stale70/coord_gain_% 2.03

@@ -1,0 +1,268 @@
+{
+ "conversation/jsq_count/stale0/coord_lite": {
+  "throughput_per_gpu": 13516.016,
+  "user_tps": 221.574,
+  "step_ms": 14.001,
+  "loss_total_%": 1.522,
+  "loss_attention_side_%": 0.238,
+  "loss_moe_lb_%": 1.285,
+  "conc_cv_across_ranks": 0.0
+ },
+ "conversation/jsq_count/stale0/dspark": {
+  "throughput_per_gpu": 13412.879,
+  "user_tps": 219.883,
+  "step_ms": 13.986,
+  "loss_total_%": 2.616,
+  "loss_attention_side_%": 1.388,
+  "loss_moe_lb_%": 1.228,
+  "conc_cv_across_ranks": 0.0
+ },
+ "conversation/jsq_count/stale20/coord_lite": {
+  "throughput_per_gpu": 12163.441,
+  "user_tps": 199.401,
+  "step_ms": 14.999,
+  "loss_total_%": 7.3,
+  "loss_attention_side_%": 2.873,
+  "loss_moe_lb_%": 1.232,
+  "conc_cv_across_ranks": 0.399
+ },
+ "conversation/jsq_count/stale20/dspark": {
+  "throughput_per_gpu": 11465.073,
+  "user_tps": 187.952,
+  "step_ms": 15.882,
+  "loss_total_%": 15.801,
+  "loss_attention_side_%": 11.954,
+  "loss_moe_lb_%": 1.004,
+  "conc_cv_across_ranks": 0.392
+ },
+ "conversation/jsq_count/stale70/coord_lite": {
+  "throughput_per_gpu": 10099.752,
+  "user_tps": 165.57,
+  "step_ms": 17.08,
+  "loss_total_%": 20.06,
+  "loss_attention_side_%": 12.48,
+  "loss_moe_lb_%": 0.989,
+  "conc_cv_across_ranks": 0.954
+ },
+ "conversation/jsq_count/stale70/dspark": {
+  "throughput_per_gpu": 9175.224,
+  "user_tps": 150.414,
+  "step_ms": 17.817,
+  "loss_total_%": 28.17,
+  "loss_attention_side_%": 21.339,
+  "loss_moe_lb_%": 0.73,
+  "conc_cv_across_ranks": 0.939
+ },
+ "conversation/jsq_work/stale0/coord_lite": {
+  "throughput_per_gpu": 13512.84,
+  "user_tps": 221.522,
+  "step_ms": 14.027,
+  "loss_total_%": 1.667,
+  "loss_attention_side_%": 0.243,
+  "loss_moe_lb_%": 1.284,
+  "conc_cv_across_ranks": 0.025
+ },
+ "conversation/jsq_work/stale0/dspark": {
+  "throughput_per_gpu": 13446.084,
+  "user_tps": 220.428,
+  "step_ms": 13.954,
+  "loss_total_%": 2.359,
+  "loss_attention_side_%": 0.991,
+  "loss_moe_lb_%": 1.234,
+  "conc_cv_across_ranks": 0.023
+ },
+ "conversation/jsq_work/stale20/coord_lite": {
+  "throughput_per_gpu": 12043.86,
+  "user_tps": 197.44,
+  "step_ms": 15.073,
+  "loss_total_%": 7.816,
+  "loss_attention_side_%": 3.216,
+  "loss_moe_lb_%": 1.223,
+  "conc_cv_across_ranks": 0.426
+ },
+ "conversation/jsq_work/stale20/dspark": {
+  "throughput_per_gpu": 11429.177,
+  "user_tps": 187.364,
+  "step_ms": 15.908,
+  "loss_total_%": 16.021,
+  "loss_attention_side_%": 12.111,
+  "loss_moe_lb_%": 1.0,
+  "conc_cv_across_ranks": 0.393
+ },
+ "conversation/jsq_work/stale70/coord_lite": {
+  "throughput_per_gpu": 10059.598,
+  "user_tps": 164.911,
+  "step_ms": 17.12,
+  "loss_total_%": 20.325,
+  "loss_attention_side_%": 12.865,
+  "loss_moe_lb_%": 0.982,
+  "conc_cv_across_ranks": 0.973
+ },
+ "conversation/jsq_work/stale70/dspark": {
+  "throughput_per_gpu": 9113.713,
+  "user_tps": 149.405,
+  "step_ms": 17.923,
+  "loss_total_%": 28.607,
+  "loss_attention_side_%": 21.669,
+  "loss_moe_lb_%": 0.723,
+  "conc_cv_across_ranks": 0.955
+ },
+ "conversation/random/stale0/coord_lite": {
+  "throughput_per_gpu": 13127.327,
+  "user_tps": 215.202,
+  "step_ms": 14.22,
+  "loss_total_%": 2.834,
+  "loss_attention_side_%": 0.35,
+  "loss_moe_lb_%": 1.274,
+  "conc_cv_across_ranks": 0.157
+ },
+ "conversation/random/stale0/dspark": {
+  "throughput_per_gpu": 12892.221,
+  "user_tps": 211.348,
+  "step_ms": 14.473,
+  "loss_total_%": 6.333,
+  "loss_attention_side_%": 4.328,
+  "loss_moe_lb_%": 1.167,
+  "conc_cv_across_ranks": 0.131
+ },
+ "toolagent/jsq_count/stale0/coord_lite": {
+  "throughput_per_gpu": 13396.866,
+  "user_tps": 219.621,
+  "step_ms": 14.124,
+  "loss_total_%": 1.533,
+  "loss_attention_side_%": 0.26,
+  "loss_moe_lb_%": 1.273,
+  "conc_cv_across_ranks": 0.0
+ },
+ "toolagent/jsq_count/stale0/dspark": {
+  "throughput_per_gpu": 13254.445,
+  "user_tps": 217.286,
+  "step_ms": 14.12,
+  "loss_total_%": 2.868,
+  "loss_attention_side_%": 1.659,
+  "loss_moe_lb_%": 1.209,
+  "conc_cv_across_ranks": 0.0
+ },
+ "toolagent/jsq_count/stale20/coord_lite": {
+  "throughput_per_gpu": 12753.356,
+  "user_tps": 209.071,
+  "step_ms": 14.45,
+  "loss_total_%": 3.66,
+  "loss_attention_side_%": 0.419,
+  "loss_moe_lb_%": 1.249,
+  "conc_cv_across_ranks": 0.214
+ },
+ "toolagent/jsq_count/stale20/dspark": {
+  "throughput_per_gpu": 12176.116,
+  "user_tps": 199.608,
+  "step_ms": 15.24,
+  "loss_total_%": 10.743,
+  "loss_attention_side_%": 7.859,
+  "loss_moe_lb_%": 1.087,
+  "conc_cv_across_ranks": 0.2
+ },
+ "toolagent/jsq_count/stale70/coord_lite": {
+  "throughput_per_gpu": 10657.873,
+  "user_tps": 174.719,
+  "step_ms": 16.474,
+  "loss_total_%": 15.744,
+  "loss_attention_side_%": 8.858,
+  "loss_moe_lb_%": 1.07,
+  "conc_cv_across_ranks": 0.74
+ },
+ "toolagent/jsq_count/stale70/dspark": {
+  "throughput_per_gpu": 9889.547,
+  "user_tps": 162.124,
+  "step_ms": 17.239,
+  "loss_total_%": 24.061,
+  "loss_attention_side_%": 18.353,
+  "loss_moe_lb_%": 0.813,
+  "conc_cv_across_ranks": 0.694
+ },
+ "toolagent/jsq_work/stale0/coord_lite": {
+  "throughput_per_gpu": 13381.111,
+  "user_tps": 219.362,
+  "step_ms": 14.152,
+  "loss_total_%": 1.711,
+  "loss_attention_side_%": 0.268,
+  "loss_moe_lb_%": 1.271,
+  "conc_cv_across_ranks": 0.031
+ },
+ "toolagent/jsq_work/stale0/dspark": {
+  "throughput_per_gpu": 13303.318,
+  "user_tps": 218.087,
+  "step_ms": 14.069,
+  "loss_total_%": 2.421,
+  "loss_attention_side_%": 1.034,
+  "loss_moe_lb_%": 1.217,
+  "conc_cv_across_ranks": 0.031
+ },
+ "toolagent/jsq_work/stale20/coord_lite": {
+  "throughput_per_gpu": 12650.833,
+  "user_tps": 207.391,
+  "step_ms": 14.526,
+  "loss_total_%": 3.979,
+  "loss_attention_side_%": 0.518,
+  "loss_moe_lb_%": 1.25,
+  "conc_cv_across_ranks": 0.234
+ },
+ "toolagent/jsq_work/stale20/dspark": {
+  "throughput_per_gpu": 12091.68,
+  "user_tps": 198.224,
+  "step_ms": 15.286,
+  "loss_total_%": 11.1,
+  "loss_attention_side_%": 8.132,
+  "loss_moe_lb_%": 1.075,
+  "conc_cv_across_ranks": 0.212
+ },
+ "toolagent/jsq_work/stale70/coord_lite": {
+  "throughput_per_gpu": 10591.776,
+  "user_tps": 173.636,
+  "step_ms": 16.52,
+  "loss_total_%": 15.979,
+  "loss_attention_side_%": 8.957,
+  "loss_moe_lb_%": 1.065,
+  "conc_cv_across_ranks": 0.746
+ },
+ "toolagent/jsq_work/stale70/dspark": {
+  "throughput_per_gpu": 9726.666,
+  "user_tps": 159.454,
+  "step_ms": 17.49,
+  "loss_total_%": 25.215,
+  "loss_attention_side_%": 19.134,
+  "loss_moe_lb_%": 0.798,
+  "conc_cv_across_ranks": 0.706
+ },
+ "toolagent/random/stale0/coord_lite": {
+  "throughput_per_gpu": 12992.243,
+  "user_tps": 212.988,
+  "step_ms": 14.358,
+  "loss_total_%": 2.847,
+  "loss_attention_side_%": 0.457,
+  "loss_moe_lb_%": 1.265,
+  "conc_cv_across_ranks": 0.162
+ },
+ "toolagent/random/stale0/dspark": {
+  "throughput_per_gpu": 12770.259,
+  "user_tps": 209.349,
+  "step_ms": 14.599,
+  "loss_total_%": 6.419,
+  "loss_attention_side_%": 4.472,
+  "loss_moe_lb_%": 1.151,
+  "conc_cv_across_ranks": 0.13
+ },
+ "conversation/jsq_count/stale0/coord_gain_%": 0.77,
+ "conversation/jsq_count/stale20/coord_gain_%": 6.09,
+ "conversation/jsq_count/stale70/coord_gain_%": 10.08,
+ "conversation/jsq_work/stale0/coord_gain_%": 0.5,
+ "conversation/jsq_work/stale20/coord_gain_%": 5.38,
+ "conversation/jsq_work/stale70/coord_gain_%": 10.38,
+ "conversation/random/stale0/coord_gain_%": 1.82,
+ "toolagent/jsq_count/stale0/coord_gain_%": 1.07,
+ "toolagent/jsq_count/stale20/coord_gain_%": 4.74,
+ "toolagent/jsq_count/stale70/coord_gain_%": 7.77,
+ "toolagent/jsq_work/stale0/coord_gain_%": 0.58,
+ "toolagent/jsq_work/stale20/coord_gain_%": 4.62,
+ "toolagent/jsq_work/stale70/coord_gain_%": 8.89,
+ "toolagent/random/stale0/coord_gain_%": 1.74
+}
